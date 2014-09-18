@@ -1,6 +1,6 @@
 ## These are a couple of functions that may be used to create a special
-## "matrix" object that caches it's inverse to potentially save time in
-## time-consuming computations
+## "matrix" object that caches it's inverse to potentially save time
+## on this operation
 
 
 ## The function 'makeCacheMatrix' creates a special matrix object that
@@ -25,11 +25,12 @@ makeCacheMatrix <- function(x = matrix()) {
 ## the function computes the inverse, caches it and then return the inversed
 ## matrix
 cacheSolve <- function(x, ...) {
-	if(!is.null(x$getinverse())) {
-		message("getting cached matrix")
-		return(x$getinverse())
+	if(is.null(x$getinverse())) {
+		message("solving and caching matrix")
+		x$setinverse( solve(x$get(), ...) )
 	}
-	message("solving and caching matrix")
-	x$setinverse( solve(x$get(), ...) )
+	else {
+		message("getting cached matrix")
+	}
 	x$getinverse()
 }
